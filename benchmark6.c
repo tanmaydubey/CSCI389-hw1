@@ -42,7 +42,6 @@ int main() {
             // read/write to numbers[rand_index]
             numbers[rand_index] += 1;
         }
-
         //end the timer
         clock_gettime(CLOCK_MONOTONIC_RAW, &end);
         double long time_elapsed = (end.tv_nsec - start.tv_nsec) - (1000000*rand_gen_time);

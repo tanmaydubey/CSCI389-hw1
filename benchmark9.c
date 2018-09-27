@@ -25,7 +25,7 @@ int main() {
     }
     clock_t end = clock();
     double rand_gen_time = (end - start)/((double)CLOCKS_PER_SEC*iterations);
-    
+
     // iterations for buffer measurements
     iterations = 1000000;
 
@@ -37,6 +37,13 @@ int main() {
         for(u_int32_t j = 0; j < buff_size; j++) {
             int r = rand();
             numbers[j] = r%100;
+        }
+
+        // do a bunch of reads to ensure buffer values are cached
+        u_int8_t dummy;
+        for(u_int32_t j = 0; j<iterations;j++) {
+             int r = rand() % buff_size;
+             dummy = numbers[r];
         }
 
         // measure read/write time

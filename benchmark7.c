@@ -35,14 +35,14 @@ int main() {
      
         // start the timer
         clock_t start = clock();
-        for(int j=0;j<100000;j++) {
+        for(int j=0;j<1000000;j++) {
             long rand_index = random() % i;
             // read/write to numbers[rand_index]
             numbers[rand_index] += 1;
         }
         //end the timer
         clock_t end = clock();
-        double long time_elapsed = NANOS_PER_SEC*((end - start) - (100000*rand_gen_time))/(100000*(double)CLOCKS_PER_SEC);
+        double long time_elapsed = NANOS_PER_SEC*((end - start) - (1000000*rand_gen_time))/(1000000*(double)CLOCKS_PER_SEC);
 
         printf("Latency per read with N = %d is %Lf\n", i, time_elapsed);        
             

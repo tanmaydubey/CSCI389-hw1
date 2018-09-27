@@ -15,6 +15,7 @@ int main() {
     // seed random num generator
     srand(time(NULL));
 
+    // iterations for rand gen measurements
     u_int32_t iterations = 100000;
    
     // calculate time to generate rand_bits (store as rand_gen_time)
@@ -24,7 +25,9 @@ int main() {
     }
     clock_t end = clock();
     double rand_gen_time = (end - start)/((double)CLOCKS_PER_SEC*iterations);
-
+    
+    // iterations for buffer measurements
+    iterations = 1000000;
 
     // begin main loop
     for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
@@ -35,8 +38,6 @@ int main() {
             int r = rand();
             numbers[j] = r%100;
         }
-
-        iterations = 1000000;
 
         // measure read/write time
         // start the timer

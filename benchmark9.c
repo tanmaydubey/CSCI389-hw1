@@ -39,7 +39,7 @@ int main() {
             numbers[j] = r%100;
         }
 
-        // do a bunch of reads to ensure buffer values are cached
+        // do 1,000,000 random reads to ensure buffer values are cached
         u_int8_t dummy;
         for(u_int32_t j = 0; j<iterations;j++) {
              int r = rand() % buff_size;

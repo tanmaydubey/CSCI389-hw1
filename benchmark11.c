@@ -30,14 +30,17 @@ u_int32_t* shuffle(u_int32_t buff_size, u_int32_t iterations) {
     return indexes;
 }
 
-// returns time to generate+access rand. index array
-double long calc_extra_time(u_int32_t buff_size, u_int32_t iterations) {
+// returns time to generate+access rand. index array (if numbers/extra time is NULL) or read rand index (otherwise)
+double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbers) {
     u_int32_t dummy;
     clock_t start = clock();
     for(u_int32_t j=0;j<iterations;j++) {
         u_int32_t* shuffled = shuffle(buff_size, iterations);
         for(u_int32_t x = 0; x < buff_size; x++) {
             dummy = shuffled[x];
+            if(numbers) {
+                dummy = numbers[dummy];
+            }
             dummy += 1;
             // ensure dummy does not get optimized away
             if(dummy == 0) {
@@ -46,9 +49,8 @@ double long calc_extra_time(u_int32_t buff_size, u_int32_t iterations) {
         }
     }
     clock_t end = clock();
-    double long extra_time = (end - start)*NANOS_PER_SEC/(buff_size*iterations*(double)CLOCKS_PER_SEC);
-
-    return extra_time;
+    double long avg_time = (end - start)*NANOS_PER_SEC/((double)CLOCKS_PER_SEC*iterations*buff_size);
+    return avg_time;
 }
 
 // returns buff-length array of bytes init.d to rand val.s
@@ -76,7 +78,7 @@ int main() {
     for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size*=2) {
 
         // calculate time to generate/randomize/access array of indexes
-        double long extra_time = calc_extra_time(buff_size, iterations);
+        double long extra_time = calc_time(buff_size, iterations, NULL);
         printf("extra time: %Lf\n", extra_time);
 
         // create/initialize buffer of rand vals
@@ -100,25 +102,9 @@ int main() {
 
 
         // measure read/write time
-        // start the timer
-        dummy = 0;
-        clock_t start = clock();
-        for(u_int32_t j=0;j<iterations;j++) {
-            u_int32_t* shuffled = shuffle(buff_size, iterations);
-            for(u_int32_t x = 0; x < buff_size; x++) {
-                dummy = numbers[shuffled[x]];
-                dummy += 1;
-                // ensure dummy does not get optimized away
-                if(dummy == 0) {
-                    printf("action");
-                }
-            }
-        }
-        //end the timer
-        clock_t end = clock();
-        double long time_elapsed = (end - start)*NANOS_PER_SEC/((double)CLOCKS_PER_SEC*iterations*buff_size) - extra_time;
-
-        printf("Latency per read with N = %f is %Lf\n", log2(buff_size), time_elapsed);        
+        double long avg_read_latency = calc_time(buff_size, iterations, numbers) - extra_time;
+        
+        printf("Latency per read with N = %f is %Lf\n", log2(buff_size), avg_read_latency);        
             
         printf("Freeing array\n\n");
         free(numbers);

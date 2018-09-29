@@ -49,7 +49,7 @@ double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbe
         }
     }
     clock_t end = clock();
-    double long avg_time = (end - start)*NANOS_PER_SEC/((double)CLOCKS_PER_SEC*iterations*buff_size);
+    double long avg_time = ((end - start)/(iterations*buff_size)) * NANOS_PER_SEC/(double)CLOCKS_PER_SEC;
     return avg_time;
 }
 

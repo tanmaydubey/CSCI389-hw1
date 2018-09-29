@@ -76,8 +76,8 @@ int main() {
     for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size*=2) {
 
         // calculate time to generate/randomize/access array of indexes
-        double extra_time = calc_extra_time(buff_size, iterations);
-        printf("extra time: %f\n", extra_time);
+        double long extra_time = calc_extra_time(buff_size, iterations);
+        printf("extra time: %Lf\n", extra_time);
 
         // create/initialize buffer of rand vals
         printf("Initializing new array\n");

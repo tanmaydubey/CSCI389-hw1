@@ -30,7 +30,7 @@ u_int32_t* shuffle(u_int32_t buff_size, u_int32_t iterations) {
     return indexes;
 }
 
-// returns time to generate+access rand. index array (if numbers/extra time is NULL) or read rand index (otherwise)
+// returns avg time to generate+access rand. index array (+ read from buffer if numbers != NULL)
 double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbers) {
     u_int32_t dummy;
     clock_t start = clock();

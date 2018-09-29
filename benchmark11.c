@@ -37,9 +37,10 @@ double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbe
     for(u_int32_t j=0;j<iterations;j++) {
         u_int32_t* shuffled = shuffle(buff_size, iterations);
         for(u_int32_t x = 0; x < buff_size; x++) {
-            dummy = shuffled[x];
             if(numbers) {
-                dummy = numbers[dummy];
+                dummy = numbers[shuffled[x]];
+            } else {
+                dummy = shuffled[x];
             }
             dummy += 1;
             // ensure dummy does not get optimized away

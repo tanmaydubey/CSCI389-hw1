@@ -85,7 +85,7 @@ int main() {
         printf("Initializing new array\n");
         u_int8_t* numbers = make_buffer(buff_size);
 
-        // do 1,000,000 random reads to ensure buffer values are cached
+        // do many random reads to ensure buffer values are cached
         calc_time(buff_size, iterations, numbers);
 
 

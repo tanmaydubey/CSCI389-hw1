@@ -86,18 +86,7 @@ int main() {
         u_int8_t* numbers = make_buffer(buff_size);
 
         // do 1,000,000 random reads to ensure buffer values are cached
-        u_int8_t dummy;
-        for(u_int32_t j = 0; j<iterations;j++) {
-            u_int32_t* shuffled = shuffle(buff_size, iterations);
-            for(u_int32_t x = 0; x < buff_size; x++) {
-                dummy = numbers[shuffled[x]];
-                dummy += 1;
-                // ensure dummy not optimized away
-                if(dummy==0) {
-                    printf("action\n");
-                }
-            }
-        }
+        calc_time(buff_size, iterations, numbers);
 
 
 

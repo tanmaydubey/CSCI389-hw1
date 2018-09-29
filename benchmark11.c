@@ -22,7 +22,7 @@ u_int32_t* shuffle(u_int32_t buff_size, u_int32_t iterations) {
     // shuffle the array
     for(u_int32_t j = 0; j < buff_size; j++) {
         // swap elts at j <-> rand index
-        long rand_ind = random() % buff_size;
+        u_int32_t rand_ind = random() % buff_size;
         temp = indexes[rand_ind];
         indexes[rand_ind] = indexes[j];
         indexes[j] = temp;

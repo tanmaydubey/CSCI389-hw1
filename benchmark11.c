@@ -39,15 +39,14 @@ double long calc_extra_time(u_int32_t buff_size, u_int32_t iterations) {
         for(u_int32_t x = 0; x < buff_size; x++) {
             dummy = shuffled[x];
             dummy += 1;
+            // ensure dummy does not get optimized away
+            if(dummy == 0) {
+                printf("action");
+            }
         }
     }
     clock_t end = clock();
     double long extra_time = (end - start)*NANOS_PER_SEC/(buff_size*iterations*(double)CLOCKS_PER_SEC);
-
-    // ensure dummy does not get optimized away
-    if(dummy == 0) {
-        printf("action");
-    }
 
     return extra_time;
 }
@@ -70,7 +69,7 @@ int main() {
     srand(time(NULL));
 
     // iterations of measurements
-    u_int32_t iterations = 100;
+    u_int32_t iterations = 1000;
    
 
     // begin main loop
@@ -109,16 +108,15 @@ int main() {
             for(u_int32_t x = 0; x < buff_size; x++) {
                 dummy = numbers[shuffled[x]];
                 dummy += 1;
+                // ensure dummy does not get optimized away
+                if(dummy == 0) {
+                    printf("action");
+                }
             }
         }
         //end the timer
         clock_t end = clock();
         double long time_elapsed = (end - start)*NANOS_PER_SEC/((double)CLOCKS_PER_SEC*iterations*buff_size) - extra_time;
-
-        // ensure dummy does not get optimized away
-        if(dummy == 0) {
-            printf("action");
-        }
 
         printf("Latency per read with N = %f is %Lf\n", log2(buff_size), time_elapsed);        
             

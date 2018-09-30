@@ -1,4 +1,4 @@
-
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -16,11 +16,11 @@ int main() {
     srand(time(NULL));
 
     // iterations of measurements
-    u_int32_t iterations = 1000000;
+    uint32_t iterations = 1000000;
    
 
     // begin main loop
-    for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
+    for (uint32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
 
         // calculate time to generate rand_bits (store as rand_gen_time)
         clock_t start = clock();
@@ -32,16 +32,16 @@ int main() {
 
         // create/initialize buffer
         printf("Initializing new array\n");
-        u_int8_t* numbers = malloc(sizeof(u_int8_t) * buff_size);
+        uint8_t* numbers = malloc(sizeof(uint8_t) * buff_size);
         // fill in buffer w rand val.s
-        for(u_int32_t j = 0; j < buff_size; j++) {
+        for(uint32_t j = 0; j < buff_size; j++) {
             int r = rand();
             numbers[j] = r%100;
         }
 
         // do 1,000,000 random reads to ensure buffer values are cached
-        u_int8_t dummy;
-        for(u_int32_t j = 0; j<iterations;j++) {
+        uint8_t dummy;
+        for(uint32_t j = 0; j<iterations;j++) {
              int r = rand() % buff_size;
              dummy = numbers[r];
         }

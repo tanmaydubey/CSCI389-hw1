@@ -1,4 +1,4 @@
-
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,18 +11,18 @@ const int NANOS_PER_SEC = 1000000000;
 
 
 // returns randomized array w indexes 1 - buff_size;
-u_int32_t* shuffle(u_int32_t buff_size, u_int32_t iterations) {
+uint32_t* shuffle(uint32_t buff_size, uint32_t iterations) {
     //create array of every index of buffer
-    u_int32_t* indexes = malloc(sizeof(u_int32_t) * buff_size);
-    for(u_int32_t j = 0; j < buff_size; j++) {
+    uint32_t* indexes = malloc(sizeof(uint32_t) * buff_size);
+    for(uint32_t j = 0; j < buff_size; j++) {
         indexes[j] = j;
     }
     // temp stores values during swaps
-    u_int8_t temp;
+    uint8_t temp;
     // shuffle the array
-    for(u_int32_t j = 0; j < buff_size; j++) {
+    for(uint32_t j = 0; j < buff_size; j++) {
         // swap elts at j <-> rand index
-        u_int32_t rand_ind = random() % buff_size;
+        uint32_t rand_ind = random() % buff_size;
         temp = indexes[rand_ind];
         indexes[rand_ind] = indexes[j];
         indexes[j] = temp;
@@ -31,12 +31,12 @@ u_int32_t* shuffle(u_int32_t buff_size, u_int32_t iterations) {
 }
 
 // returns avg time to generate+access rand. index array (+ read from buffer if numbers != NULL)
-double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbers) {
-    u_int32_t dummy;
+double long calc_time(uint32_t buff_size, uint32_t iterations, uint8_t* numbers) {
+    uint32_t dummy;
     clock_t start = clock();
-    for(u_int32_t j=0;j<iterations;j++) {
-        u_int32_t* shuffled = shuffle(buff_size, iterations);
-        for(u_int32_t x = 0; x < buff_size; x++) {
+    for(uint32_t j=0;j<iterations;j++) {
+        uint32_t* shuffled = shuffle(buff_size, iterations);
+        for(uint32_t x = 0; x < buff_size; x++) {
             if(numbers) {
                 dummy = numbers[shuffled[x]];
             } else {
@@ -55,10 +55,10 @@ double long calc_time(u_int32_t buff_size, u_int32_t iterations, u_int8_t* numbe
 }
 
 // returns buff-length array of bytes init.d to rand val.s
-u_int8_t* make_buffer(u_int32_t buff_size) {
-    u_int8_t* numbers = malloc(sizeof(u_int8_t) * buff_size);
-    for(u_int32_t j = 0; j < buff_size; j++) {
-        u_int8_t r = rand() % 100;
+uint8_t* make_buffer(uint32_t buff_size) {
+    uint8_t* numbers = malloc(sizeof(uint8_t) * buff_size);
+    for(uint32_t j = 0; j < buff_size; j++) {
+        uint8_t r = rand() % 100;
         numbers[j] = r;
     }
     return numbers;
@@ -72,11 +72,11 @@ int main() {
     srand(time(NULL));
 
     // iterations of measurements
-    u_int32_t iterations = 1000;
+    uint32_t iterations = 1000;
    
 
     // begin main loop
-    for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size*=2) {
+    for (uint32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size*=2) {
 
         // calculate time to generate/randomize/access array of indexes
         double long extra_time = calc_time(buff_size, iterations, NULL);
@@ -84,7 +84,7 @@ int main() {
 
         // create/initialize buffer of rand vals
         printf("Initializing new array\n");
-        u_int8_t* numbers = make_buffer(buff_size);
+        uint8_t* numbers = make_buffer(buff_size);
 
         // do many random reads to ensure buffer values are cached
         calc_time(buff_size, iterations, numbers);

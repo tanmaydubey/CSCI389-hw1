@@ -1,4 +1,4 @@
-#include <stdint.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -15,18 +15,12 @@ int main() {
     // seed random num generator
     srand(time(NULL));
 
-    // iterations for buffer measurements
-    uint32_t iterations = 1000000;
+    // iterations of measurements
+    u_int32_t iterations = 1000000;
+   
 
     // begin main loop
-    for (uint32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
-        printf("Initializing new array\n");
-        uint8_t* numbers = malloc(sizeof(uint8_t) * buff_size);
-        // fill in buffer w rand val.s
-        for(uint32_t j = 0; j < buff_size; j++) {
-            int r = rand();
-            numbers[j] = r%100;
-        }
+    for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
 
         // calculate time to generate rand_bits (store as rand_gen_time)
         clock_t start = clock();
@@ -36,31 +30,39 @@ int main() {
         clock_t end = clock();
         double rand_gen_time = (end - start)/((double)CLOCKS_PER_SEC*iterations);
 
-        // do a bunch of reads to ensure buffer values are cached
-        uint8_t dummy;
-        // for(uint32_t j = 0; j < buff_size; j++) {
-        //     for(uint32_t k = j+1; k < buff_size; k++) {
-        //         dummy = numbers[k];
-        //     }
-        // }
+        // create/initialize buffer
+        printf("Initializing new array\n");
+        u_int8_t* numbers = malloc(sizeof(u_int8_t) * buff_size);
+        // fill in buffer w rand val.s
+        for(u_int32_t j = 0; j < buff_size; j++) {
+            int r = rand();
+            numbers[j] = r%100;
+        }
 
-        // GOAL: generate a random permutation of {0, 1, ... , buff_size-1}
+        // do 1,000,000 random reads to ensure buffer values are cached
+        u_int8_t dummy;
+        for(u_int32_t j = 0; j<iterations;j++) {
+             int r = rand() % buff_size;
+             dummy = numbers[r];
+        }
 
         // measure read/write time
         // start the timer
+        dummy = 0;
         start = clock();
         for(int j=0;j<iterations;j++) {
             long rand_index = random() % buff_size;
             // read/write to numbers[rand_index]
-            dummy = numbers[rand_index];
-
-            if (dummy == -1) {
-                printf("Dummy");
-            }
+            dummy += 1;
         }
         //end the timer
         end = clock();
         double long time_elapsed = NANOS_PER_SEC*((end - start) - (iterations*rand_gen_time))/(iterations*(double)CLOCKS_PER_SEC);
+
+        // ensure dummy does not get optimized away
+        if(dummy == 0) {
+            printf("action");
+        }
 
         printf("Latency per read with N = %d is %Lf\n", buff_size, time_elapsed);        
             

@@ -15,22 +15,22 @@ int main() {
     // seed random num generator
     srand(time(NULL));
 
-    // iterations for rand gen measurements
-    u_int32_t iterations = 100000;
+    // iterations of measurements
+    u_int32_t iterations = 1000000;
    
-    // calculate time to generate rand_bits (store as rand_gen_time)
-    clock_t start = clock();
-    for(int i=0;i<iterations;i++) {
-        long rand_bits = random();
-    }
-    clock_t end = clock();
-    double rand_gen_time = (end - start)/((double)CLOCKS_PER_SEC*iterations);
-
-    // iterations for buffer measurements
-    iterations = 1000000;
 
     // begin main loop
     for (u_int32_t buff_size = MIN_BUFFER_SIZE; buff_size <= MAX_BUFFER_SIZE; buff_size *= 2) {
+
+        // calculate time to generate rand_bits (store as rand_gen_time)
+        clock_t start = clock();
+        for(int i=0;i<iterations;i++) {
+            long rand_bits = random() % buff_size;
+        }
+        clock_t end = clock();
+        double rand_gen_time = (end - start)/((double)CLOCKS_PER_SEC*iterations);
+
+        // create/initialize buffer
         printf("Initializing new array\n");
         u_int8_t* numbers = malloc(sizeof(u_int8_t) * buff_size);
         // fill in buffer w rand val.s
@@ -48,15 +48,21 @@ int main() {
 
         // measure read/write time
         // start the timer
-        clock_t start = clock();
+        dummy = 0;
+        start = clock();
         for(int j=0;j<iterations;j++) {
             long rand_index = random() % buff_size;
             // read/write to numbers[rand_index]
-            numbers[rand_index] += 1;
+            dummy += 1;
         }
         //end the timer
-        clock_t end = clock();
+        end = clock();
         double long time_elapsed = NANOS_PER_SEC*((end - start) - (iterations*rand_gen_time))/(iterations*(double)CLOCKS_PER_SEC);
+
+        // ensure dummy does not get optimized away
+        if(dummy == 0) {
+            printf("action");
+        }
 
         printf("Latency per read with N = %d is %Lf\n", buff_size, time_elapsed);        
             

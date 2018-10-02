@@ -8,8 +8,6 @@ const int MIN_BUFFER_SIZE = 1024;       // 2**10
 const int MAX_BUFFER_SIZE = 67108864*4; // 2**28
 const int NANOS_PER_SEC = 1000000000;
 
-
-
 int main() {
 
     // seed random num generator

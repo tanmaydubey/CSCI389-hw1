@@ -1,0 +1,7 @@
+set terminal gif
+set output "graph1.gif"
+set logscale x 2
+unset key
+set title "Mean latency per memory read"
+set xlabel "Buffer size in KB"
+set ylabel "Mean latency per memory read in ns"

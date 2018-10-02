@@ -24,3 +24,5 @@ Cache | Size
 L1 | 64 KB
 L2 | 500 KB
 L3 | 3 MB
+
+Our over-estimation of L3's capacity could have resulted from the fact that most memory accesses may still be from cache even after all the caches are full - some overflow into disk memory does not mean that reads are happening primarily from disk.

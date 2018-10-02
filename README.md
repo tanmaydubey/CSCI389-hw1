@@ -11,7 +11,7 @@ Cache | Size
 ----- | ----
 L1 | 100 KB
 L2 | 500 KB
-L3 | 10 MB
+L3 | 15 MB
 
 We deduce these cache sizes because the graph illustrates significant jumps in data-access-time at the points where (we infer) L1 and L3 run out of memory, with a roughly linear stretch connecting the two flat sections indicating L1 and L3 which we infer represents data gradually overflowing from L1 to L2, and then from L2 to L3.
 

@@ -6,6 +6,7 @@ The graph of average memory read latency against buffer size is given below:
 ![Memory read latency vs buffer size](/graphs/graph1.gif)
 
 From the data, we can infer the following sizes for the L1, L2 and L3 caches:
+
 Cache | Size
 ----- | ----
 L1 | 128 KB

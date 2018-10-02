@@ -26,3 +26,5 @@ L2 | 500 KB
 L3 | 3 MB
 
 The graph could lack a clean step form because memory accesses may still be from cache even after all the caches are full - some overflow into disk memory does not mean that reads are happening exclusively from disk. Similarly, some overflow into bigger caches does not mean that some reads are not still happening from L1 and L2. Thus it should not be surprising that the graph is not a perfect step function.
+
+NOTE: Our data is from benchmark9.c. We made a benchmark11.c which attempted to fix our abnormally high minimum access time by utilizing a different randomization method, but benchmark11.c does not yield sensible data. We include it anyway because we put a lot of time into improving the clarity/randomization method of the code.

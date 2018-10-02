@@ -1,6 +1,5 @@
-# CSCI389-hw1
+# CSCI 389 - Homework 1 Results
 ### Joe Meyer and Tanmay Dubey
-## Results
 
 The graph of average memory read latency against buffer size is given below:
 ![Memory read latency vs buffer size](/graphs/graph1.gif)

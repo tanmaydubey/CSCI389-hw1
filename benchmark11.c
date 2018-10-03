@@ -48,6 +48,7 @@ double long calc_time(uint32_t buff_size, uint32_t iterations, uint8_t* numbers)
                 printf("action");
             }
         }
+        free(shuffled);
     }
     clock_t end = clock();
     double long avg_time = (end - start)*NANOS_PER_SEC/((double)CLOCKS_PER_SEC*iterations*buff_size);
